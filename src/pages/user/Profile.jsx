@@ -499,6 +499,9 @@ export default function Profile({ onPostCreated }) {
                         src={post.user?.photo || avatar}
                         alt={post.user?.name || 'Author'}
                         style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }}
+                        onError={(e) => {
+                          e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
+                        }}
                       />
                       <div>
                         <div style={{ fontWeight: 700, fontSize: '0.92rem' }}>{post.user?.name || profileData?.name}</div>
@@ -517,7 +520,9 @@ export default function Profile({ onPostCreated }) {
                         <img
                           src={post.image}
                           alt="Post asset"
+                          loading="lazy"
                           style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
+                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
                         />
                       </div>
                     )}
