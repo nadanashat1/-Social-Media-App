@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { X, Heart, AlertCircle, RefreshCw, UserCheck } from 'lucide-react';
 import postsApi from '../../api/posts.api';
+import useModalA11y from '../../hooks/useModalA11y';
 
 
 export default function PostLikesModal({ postId, onClose }) {
@@ -12,6 +13,8 @@ export default function PostLikesModal({ postId, onClose }) {
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [totalLikes, setTotalLikes] = useState(0);
+
+  const dialogRef = useModalA11y(Boolean(postId), onClose);
 
   const fetchLikes = useCallback(
     async (targetPage = 1, append = false) => {
@@ -56,14 +59,6 @@ export default function PostLikesModal({ postId, onClose }) {
   }, [fetchLikes]);
 
   
-  useEffect(() => {
-    function handleKeyDown(e) {
-      if (e.key === 'Escape') onClose();
-    }
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
  
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -82,9 +77,6 @@ export default function PostLikesModal({ postId, onClose }) {
 
   return (
     <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="likes-modal-title"
       style={{
         position: 'fixed',
         inset: 0,
@@ -101,6 +93,10 @@ export default function PostLikesModal({ postId, onClose }) {
       }}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="likes-modal-title"
         className="auth-card"
         style={{
           width: '100%',
