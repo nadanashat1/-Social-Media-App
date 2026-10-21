@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, AlertCircle, CheckCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, CheckCircle, ArrowRight, ShieldCheck, Info } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { PASSWORD_RULE, PASSWORD_RULE_HINT, PASSWORD_RULE_ERROR, friendlyPasswordError } from '../../utils/password';
 import Footer from '../../components/common/Footer';
 
 export default function ChangePassword() {
@@ -27,8 +28,8 @@ export default function ChangePassword() {
       setError('Please enter your current password.');
       return;
     }
-    if (!newPassword || newPassword.length < 6) {
-      setError('New password must be at least 6 characters.');
+    if (!newPassword || !PASSWORD_RULE.test(newPassword)) {
+      setError(PASSWORD_RULE_ERROR);
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -60,7 +61,7 @@ export default function ChangePassword() {
       }, 1500);
     } catch (err) {
       const msg = err.friendlyMessage || err.message || 'Failed to change password. Please verify current password.';
-      setError(msg);
+      setError(friendlyPasswordError(msg, [password, newPassword, confirmPassword]));
     } finally {
       setIsLoading(false);
     }
@@ -150,7 +151,7 @@ export default function ChangePassword() {
               <label htmlFor="new-password" className="form-label">
                 New Password
               </label>
-              <span className="form-label-meta">MIN 6 CHARACTERS</span>
+              <span className="form-label-meta">MIN 8 CHARACTERS</span>
             </div>
             <div className="input-container">
               <input
@@ -172,6 +173,10 @@ export default function ChangePassword() {
               >
                 {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
+            </div>
+            <div className="form-helper-text">
+              <Info size={13} />
+              <span>{PASSWORD_RULE_HINT}</span>
             </div>
           </div>
 
