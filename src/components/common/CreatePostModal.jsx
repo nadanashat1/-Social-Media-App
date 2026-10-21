@@ -141,10 +141,10 @@ export default function CreatePostModal({ isOpen, onClose, onPostCreated }) {
 
         <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
           <img
-            src={user?.photo || '/images/default-avatar.jpg'}
+            src={user?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
             alt={user?.name || 'You'}
             style={{ width: 42, height: 42, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-            onError={(e) => { e.currentTarget.src = '/images/default-avatar.jpg'; }}
+            onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
           />
           <div style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)', paddingTop: '0.6rem' }}>
             {user?.name || 'Route Author'}
