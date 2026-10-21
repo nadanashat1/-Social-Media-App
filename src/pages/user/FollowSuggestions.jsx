@@ -125,7 +125,7 @@ export default function FollowSuggestions() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
                     <Link to={`/profile/${userId}`}>
                       <img
-                        src={item.photo || '/images/default-avatar.jpg'}
+                        src={item.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                         alt={item.name}
                         style={{
                           width: 52,
@@ -136,7 +136,7 @@ export default function FollowSuggestions() {
                           backgroundColor: 'var(--bg-input)',
                         }}
                         onError={(e) => {
-                          e.currentTarget.src = '/images/default-avatar.jpg';
+                          e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                         }}
                       />
                     </Link>
