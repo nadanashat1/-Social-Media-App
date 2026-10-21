@@ -14,8 +14,8 @@ function fillRequiredTextFields() {
   fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'nada_dev' } });
   fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Nada Nashaat' } });
   fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'nada@example.com' } });
-  fireEvent.change(screen.getByLabelText(/^password$/i), { target: { value: 'secret1' } });
-  fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: 'secret1' } });
+  fireEvent.change(screen.getByLabelText(/^password$/i), { target: { value: 'Secret1!' } });
+  fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: 'Secret1!' } });
 }
 
 describe('SignUp explicit choices', () => {
@@ -60,5 +60,52 @@ describe('SignUp explicit choices', () => {
     expect(signupMock).toHaveBeenCalledWith(
       expect.objectContaining({ dateOfBirth: '2003-06-15', gender: 'male' })
     );
+  });
+});
+
+describe('SignUp password safety', () => {
+  beforeEach(() => {
+    signupMock.mockReset();
+  });
+
+  it('rejects a weak password client-side without calling the API', async () => {
+    render(
+      <MemoryRouter>
+        <SignUp />
+      </MemoryRouter>
+    );
+    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'nada_dev' } });
+    fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Nada Nashaat' } });
+    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'nada@example.com' } });
+    fireEvent.change(screen.getByLabelText(/date of birth/i), { target: { value: '2003-06-15' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Male' }));
+    fireEvent.change(screen.getByLabelText(/^password$/i), { target: { value: 'secret1' } });
+    fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: 'secret1' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+
+    const banner = await screen.findByRole('alert');
+    expect(banner.textContent).toMatch(/at least 8 characters/i);
+    expect(signupMock).not.toHaveBeenCalled();
+  });
+
+  it('never renders the submitted password when the backend echoes it', async () => {
+    signupMock.mockRejectedValue({
+      friendlyMessage: 'validation error: password "Secret1!" fails to match the required pattern',
+    });
+    render(
+      <MemoryRouter>
+        <SignUp />
+      </MemoryRouter>
+    );
+    fillRequiredTextFields();
+    fireEvent.change(screen.getByLabelText(/date of birth/i), { target: { value: '2003-06-15' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Male' }));
+
+    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+
+    const banner = await screen.findByRole('alert');
+    await waitFor(() => expect(banner.textContent).not.toContain('Secret1!'));
+    expect(banner.textContent).toMatch(/at least 8 characters/i);
   });
 });
