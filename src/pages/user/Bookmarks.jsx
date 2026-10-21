@@ -149,7 +149,7 @@ export default function Bookmarks() {
                     style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
                     onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
                   />
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 700, fontSize: '0.94rem' }}>
                       {post.user?.name || 'Route Author'}
                     </div>
