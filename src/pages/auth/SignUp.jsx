@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AtSign, Mail, User, Eye, EyeOff, Calendar, AlertCircle, ArrowRight, Info, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { PASSWORD_RULE, PASSWORD_RULE_HINT, PASSWORD_RULE_ERROR, friendlyPasswordError } from '../../utils/password';
 import Footer from '../../components/common/Footer';
 
 export default function SignUp() {
@@ -59,8 +60,8 @@ export default function SignUp() {
       return 'Please select your gender.';
     }
 
-    if (!password || password.length < 6) {
-      return 'Password must be at least 6 characters.';
+    if (!password || !PASSWORD_RULE.test(password)) {
+      return PASSWORD_RULE_ERROR;
     }
 
     if (password !== rePassword) {
@@ -105,7 +106,7 @@ export default function SignUp() {
       }
     } catch (err) {
       const msg = err.friendlyMessage || err.message || 'Unable to complete induction. Please check your data.';
-      setError(msg);
+      setError(friendlyPasswordError(msg, [formData.password, formData.rePassword]));
     } finally {
       setIsLoading(false);
     }
@@ -296,7 +297,7 @@ export default function SignUp() {
                   id="signup-password"
                   type={showPassword ? 'text' : 'password'}
                   className="form-input"
-                  placeholder="Min. 6 characters"
+                  placeholder="Min. 8 characters"
                   value={formData.password}
                   onChange={(e) => handleChange('password', e.target.value)}
                   autoComplete="new-password"
@@ -312,8 +313,11 @@ export default function SignUp() {
                   {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                 </button>
               </div>
+              <div className="form-helper-text">
+                <Info size={13} />
+                <span>{PASSWORD_RULE_HINT}</span>
+              </div>
             </div>
-
             <div>
               <div className="form-label-row">
                 <label htmlFor="signup-repassword" className="form-label">
