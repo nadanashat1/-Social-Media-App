@@ -128,7 +128,7 @@ export default function Profile({ onPostCreated }) {
     await fetchProfile();
   };
 
-  const avatar = profileData?.photo || '/images/default-avatar.jpg';
+  const avatar = profileData?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg';
 
   return (
     <div className="auth-page-container" style={{ padding: '2rem 1.5rem' }}>
@@ -179,7 +179,7 @@ export default function Profile({ onPostCreated }) {
                       backgroundColor: 'var(--bg-input)',
                     }}
                     onError={(e) => {
-                      e.currentTarget.src = '/images/default-avatar.jpg';
+                      e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                     }}
                   />
                   {isOwnProfile && (
@@ -337,10 +337,10 @@ export default function Profile({ onPostCreated }) {
               <div className="auth-card" style={{ maxWidth: '100%', padding: '1.25rem', marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', gap: '0.9rem', alignItems: 'flex-start' }}>
                   <img
-                    src={profileData?.photo || '/images/default-avatar.jpg'}
+                    src={profileData?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                     alt={profileData?.name || 'You'}
                     style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
-                    onError={(e) => { e.currentTarget.src = '/images/default-avatar.jpg'; }}
+                    onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
                   />
                   <form
                     style={{ flex: 1 }}
