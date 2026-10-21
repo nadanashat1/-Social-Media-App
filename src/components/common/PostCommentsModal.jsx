@@ -228,11 +228,11 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
             }}
           >
             <img
-              src={author.photo || '/images/default-avatar.jpg'}
+              src={author.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
               alt={author.name || 'Author'}
               style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }}
               onError={(e) => {
-                e.currentTarget.src = '/images/default-avatar.jpg';
+                e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
               }}
             />
             <div>
@@ -299,11 +299,11 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
             <img
-              src={user?.photo || '/images/default-avatar.jpg'}
+              src={user?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
               alt={user?.name || 'You'}
               style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
               onError={(e) => {
-                e.currentTarget.src = '/images/default-avatar.jpg';
+                e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
               }}
             />
             <textarea
@@ -432,7 +432,7 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
                     style={{ display: 'flex', gap: '0.7rem', alignItems: 'flex-start' }}
                   >
                     <img
-                      src={creator.photo || '/images/default-avatar.jpg'}
+                      src={creator.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                       alt={creator.name || 'Commenter'}
                       style={{
                         width: 34,
@@ -442,7 +442,7 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
                         flexShrink: 0,
                       }}
                       onError={(e) => {
-                        e.currentTarget.src = '/images/default-avatar.jpg';
+                        e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                       }}
                     />
                     <div style={{ flex: 1 }}>
