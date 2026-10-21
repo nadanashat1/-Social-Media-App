@@ -47,7 +47,7 @@ export default function Header({ onOpenCreatePost, onOpenUploadPhoto }) {
     navigate('/signin');
   };
 
-  const avatarSrc = user?.photo || '/images/default-avatar.jpg';
+  const avatarSrc = user?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg';
 
   if (authLoading) {
     return (
@@ -151,7 +151,7 @@ export default function Header({ onOpenCreatePost, onOpenUploadPhoto }) {
                 alt={user?.name || 'Profile'}
                 className="avatar-img"
                 onError={(e) => {
-                  e.currentTarget.src = '/images/default-avatar.jpg';
+                  e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                 }}
               />
               <ChevronDown size={14} color="var(--text-dim)" />
