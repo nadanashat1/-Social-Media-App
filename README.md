@@ -4,6 +4,10 @@ A social media web app built with React and Vite: an infinite-scroll feed, posts
 
 A project for the Full Stack Web Development diploma at Route Academy.
 
+## Live Demo
+
+https://nadanashat1.github.io/-Social-Media-App/
+
 ## Features
 
 ### Authentication
