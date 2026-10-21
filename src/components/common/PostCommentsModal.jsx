@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, MessageCircle, Heart, Send, Image as ImageIcon, AlertCircle, RefreshCw, ChevronDown } from 'lucide-react';
 import postsApi from '../../api/posts.api';
 import { useAuth } from '../../context/AuthContext';
-import PostLikesModal from './PostLikesModal';
+import useModalA11y from '../../hooks/useModalA11y';
 
 
 export default function PostCommentsModal({ post, onClose, onPostUpdate, highlightCommentId }) {
@@ -13,7 +13,6 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [showLikesModal, setShowLikesModal] = useState(false);
 
   const [commentText, setCommentText] = useState('');
   const [commentImage, setCommentImage] = useState(null);
@@ -23,6 +22,8 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
 
   const fileInputRef = useRef(null);
   const postId = post?._id || post?.id;
+
+  const dialogRef = useModalA11y(Boolean(post), onClose);
 
   const fetchComments = useCallback(
     async (targetPage = 1, append = false) => {
@@ -68,14 +69,6 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
       }
     }
   }, [highlightCommentId, comments]);
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [onClose]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -173,6 +166,10 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Post comments"
         className="auth-card"
         style={{
           maxWidth: '640px',
@@ -497,6 +494,7 @@ export default function PostCommentsModal({ post, onClose, onPostUpdate, highlig
                             <img
                               src={comment.image}
                               alt="Comment attachment"
+                              loading="lazy"
                               style={{ width: '100%', height: 'auto', objectFit: 'cover', display: 'block' }}
                               onError={(e) => {
                                 e.currentTarget.style.display = 'none';
