@@ -218,7 +218,7 @@ export default function Profile({ onPostCreated }) {
                   <div style={{ fontSize: '0.92rem', color: 'var(--text-dim)', marginTop: '0.15rem' }}>
                     @{profileData?.username || 'member'}
                   </div>
-                  {profileData?.email && (
+                  {isOwnProfile && profileData?.email && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
                       <Mail size={13} />
                       <span>{profileData.email}</span>
