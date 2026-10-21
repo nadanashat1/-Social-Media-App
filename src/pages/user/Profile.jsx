@@ -164,7 +164,7 @@ export default function Profile({ onPostCreated }) {
           {/* Profile Header Card */}
           <div className="auth-card" style={{ maxWidth: '100%', padding: '2rem', marginBottom: '1.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1.5rem' }}>
-              <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+              <div className="profile-head-main" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
                 {/* Avatar with upload overlay */}
                 <div style={{ position: 'relative' }}>
                   <img
@@ -228,7 +228,7 @@ export default function Profile({ onPostCreated }) {
               </div>
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <div className="profile-actions" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 {isOwnProfile ? (
                   <>
                     <button
@@ -282,6 +282,7 @@ export default function Profile({ onPostCreated }) {
 
             {/* Metrics Row */}
             <div
+              className="profile-metrics"
               style={{
                 display: 'flex',
                 gap: '2.5rem',
