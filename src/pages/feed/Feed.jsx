@@ -41,14 +41,26 @@ export default function Feed({ feedRefreshKey }) {
   // Active post for likes modal
   const [activeLikesPostId, setActiveLikesPostId] = useState(null);
 
+  // Guard against double-clicks while a like/bookmark request is in flight,
+  // and surface failures instead of swallowing them.
+  const pendingInteractionsRef = useRef(new Set());
+  const [interactionError, setInteractionError] = useState(null);
+
   // Deep linking to post from search query (e.g. ?post=123&comment=456)
   const queryPostId = searchParams.get('post');
   const queryCommentId = searchParams.get('comment');
 
+  // Latest posts list via ref so the deep-link effect only reacts to the URL,
+  // not to every like/bookmark/pagination update.
+  const postsRef = useRef(posts);
+  useEffect(() => {
+    postsRef.current = posts;
+  }, [posts]);
+
   useEffect(() => {
     if (queryPostId) {
       let isMounted = true;
-      const found = posts.find((p) => (p._id || p.id) === queryPostId);
+      const found = postsRef.current.find((p) => (p._id || p.id) === queryPostId);
       if (found) {
         setActiveCommentPost(found);
         setHighlightCommentId(queryCommentId || null);
@@ -64,7 +76,7 @@ export default function Feed({ feedRefreshKey }) {
       }
       return () => { isMounted = false; };
     }
-  }, [queryPostId, queryCommentId, posts]);
+  }, [queryPostId, queryCommentId]);
 
   const handleCloseCommentModal = useCallback(() => {
     setActiveCommentPost(null);
@@ -310,6 +322,10 @@ export default function Feed({ feedRefreshKey }) {
   };
 
   const handleLikePost = async (postId) => {
+    const key = `like:${postId}`;
+    if (pendingInteractionsRef.current.has(key)) return;
+    pendingInteractionsRef.current.add(key);
+    setInteractionError(null);
     try {
       await postsApi.toggleLike(postId);
       setPosts((prev) =>
@@ -326,12 +342,18 @@ export default function Feed({ feedRefreshKey }) {
           return p;
         })
       );
-    } catch {
-      
+    } catch (err) {
+      setInteractionError(err.friendlyMessage || err.message || 'Could not update like. Please try again.');
+    } finally {
+      pendingInteractionsRef.current.delete(key);
     }
   };
 
   const handleBookmarkPost = async (postId) => {
+    const key = `bookmark:${postId}`;
+    if (pendingInteractionsRef.current.has(key)) return;
+    pendingInteractionsRef.current.add(key);
+    setInteractionError(null);
     try {
       await postsApi.toggleBookmark(postId);
       setPosts((prev) =>
@@ -342,8 +364,10 @@ export default function Feed({ feedRefreshKey }) {
           return p;
         })
       );
-    } catch {
-     
+    } catch (err) {
+      setInteractionError(err.friendlyMessage || err.message || 'Could not update bookmark. Please try again.');
+    } finally {
+      pendingInteractionsRef.current.delete(key);
     }
   };
 
@@ -486,6 +510,26 @@ export default function Feed({ feedRefreshKey }) {
               </div>
             </div>
 
+            {/* Like/bookmark failure notice */}
+            {interactionError && (
+              <div
+                className="alert-banner error"
+                role="alert"
+                style={{ padding: '0.75rem 1rem', marginBottom: '1rem' }}
+              >
+                <AlertCircle size={16} />
+                <span style={{ fontSize: '0.84rem', flex: 1 }}>{interactionError}</span>
+                <button
+                  type="button"
+                  className="alert-dismiss-btn"
+                  onClick={() => setInteractionError(null)}
+                  aria-label="Dismiss error"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            )}
+
             {/* Initial Loading State */}
             {isLoading && (
               <div style={{ padding: '3rem', textAlign: 'center' }}>
@@ -601,6 +645,7 @@ export default function Feed({ feedRefreshKey }) {
                           <img
                             src={post.image}
                             alt="Post attachment"
+                            loading="lazy"
                             style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
                             onError={(e) => { e.currentTarget.style.display = 'none'; }}
                           />
@@ -641,6 +686,7 @@ export default function Feed({ feedRefreshKey }) {
                               <img
                                 src={sharedPost.image}
                                 alt="Shared post attachment"
+                                loading="lazy"
                                 style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }}
                                 onError={(e) => { e.currentTarget.style.display = 'none'; }}
                               />
