@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Image as ImageIcon, AlertCircle } from 'lucide-react';
 import postsApi from '../../api/posts.api';
 import { useAuth } from '../../context/AuthContext';
+import useModalA11y from '../../hooks/useModalA11y';
 
 
 export default function CreatePostModal({ isOpen, onClose, onPostCreated }) {
@@ -13,6 +14,8 @@ export default function CreatePostModal({ isOpen, onClose, onPostCreated }) {
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
+  const dialogRef = useModalA11y(isOpen, onClose, { disableClose: isPosting });
+
   useEffect(() => {
     if (isOpen) {
       setBody('');
@@ -21,15 +24,6 @@ export default function CreatePostModal({ isOpen, onClose, onPostCreated }) {
       setError(null);
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handler = (e) => {
-      if (e.key === 'Escape' && !isPosting) onClose();
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [isOpen, isPosting, onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -108,6 +102,10 @@ export default function CreatePostModal({ isOpen, onClose, onPostCreated }) {
       onClick={handleBackdropClick}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Create post"
         className="auth-card"
         style={{
           maxWidth: '560px',
