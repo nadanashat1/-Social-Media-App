@@ -376,7 +376,7 @@ export default function Feed({ feedRefreshKey }) {
   return (
     <>
       <div className="auth-page-container" style={{ padding: '2rem 1.5rem', alignItems: 'stretch' }}>
-        <div
+        <div className="feed-layout"
           style={{
             maxWidth: '1080px',
             width: '100%',
