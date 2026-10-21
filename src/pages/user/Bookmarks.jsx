@@ -9,6 +9,7 @@ export default function Bookmarks() {
   const [bookmarks, setBookmarks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [actionError, setActionError] = useState(null);
   const [removingIds, setRemovingIds] = useState(new Set());
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export default function Bookmarks() {
     if (removingIds.has(postId)) return;
 
     setRemovingIds((prev) => new Set([...prev, postId]));
+    setActionError(null);
 
     setBookmarks((prev) => prev.filter((p) => (p._id || p.id) !== postId));
 
@@ -40,6 +42,9 @@ export default function Bookmarks() {
       await postsApi.toggleBookmark(postId);
 
     } catch (err) {
+      setActionError(
+        err.friendlyMessage || err.message || 'Could not remove the bookmark. Please try again.'
+      );
 
       try {
         const res = await usersApi.getBookmarks();
@@ -81,6 +86,25 @@ export default function Bookmarks() {
           Curated collection of essays, photography collections, and dialogue pieces you have saved for later reading.
         </p>
       </div>
+
+      {actionError && (
+        <div
+          className="alert-banner error"
+          role="alert"
+          style={{ maxWidth: '640px', width: '100%', marginBottom: '1rem' }}
+        >
+          <AlertCircle size={16} />
+          <span style={{ flex: 1 }}>{actionError}</span>
+          <button
+            type="button"
+            className="alert-dismiss-btn"
+            onClick={() => setActionError(null)}
+            aria-label="Dismiss error"
+          >
+            ×
+          </button>
+        </div>
+      )}
 
       {error ? (
         <div className="alert-banner error" style={{ maxWidth: '640px', width: '100%' }}>
