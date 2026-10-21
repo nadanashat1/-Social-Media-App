@@ -13,9 +13,9 @@ export default function Footer({ showTag = false }) {
           © 2026 Route Editorial. All rights reserved.
         </div>
         <div className="footer-links">
-          <a href="#manifesto" className="footer-link">Editorial Manifesto</a>
-          <a href="#privacy" className="footer-link">Privacy Policy</a>
-          <a href="#archive" className="footer-link">Archive</a>
+          <span className="footer-link">Editorial Manifesto</span>
+          <span className="footer-link">Privacy Policy</span>
+          <span className="footer-link">Archive</span>
         </div>
       </footer>
     </>
