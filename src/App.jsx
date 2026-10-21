@@ -32,7 +32,7 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
           <Header
             onOpenCreatePost={() => setIsCreatePostOpen(true)}
