@@ -37,16 +37,6 @@ export const authApi = {
     return res.data;
   },
 
-  
-  async healthCheck() {
-    try {
-      const res = await apiClient.get('/api/health');
-      return res.data;
-    } catch {
-      const res = await apiClient.get('/');
-      return res.data;
-    }
-  },
 };
 
 export default authApi;
