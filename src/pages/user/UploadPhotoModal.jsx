@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Camera, Upload, X, AlertCircle, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import useModalA11y from '../../hooks/useModalA11y';
 
 export default function UploadPhotoModal({ isOpen, onClose }) {
   const { uploadPhoto, user } = useAuth();
@@ -11,6 +12,16 @@ export default function UploadPhotoModal({ isOpen, onClose }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setError(null);
+    setSuccess(false);
+    onClose();
+  }, [onClose]);
+
+  const dialogRef = useModalA11y(isOpen, handleClose, { disableClose: isLoading });
 
   if (!isOpen) return null;
 
@@ -59,16 +70,6 @@ export default function UploadPhotoModal({ isOpen, onClose }) {
     }
   };
 
-  const handleClose = () => {
-    if (!isLoading) {
-      setSelectedFile(null);
-      setPreviewUrl(null);
-      setError(null);
-      setSuccess(false);
-      onClose();
-    }
-  };
-
   return (
     <div
       style={{
@@ -82,9 +83,13 @@ export default function UploadPhotoModal({ isOpen, onClose }) {
         zIndex: 200,
         padding: '1.5rem',
       }}
-      onClick={handleClose}
+      onClick={() => { if (!isLoading) handleClose(); }}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Update profile photo"
         className="auth-card"
         style={{
           maxWidth: '460px',
