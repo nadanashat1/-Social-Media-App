@@ -262,7 +262,7 @@ export default function PostLikesModal({ postId, onClose }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {likes.map((liker) => {
                 const likerId = liker._id || liker.id;
-                const likerPhoto = liker.photo || '/images/default-avatar.jpg';
+                const likerPhoto = liker.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                 const likerName = liker.name || 'Route Reader';
                 const likerUsername = liker.username || 'member';
 
@@ -303,7 +303,7 @@ export default function PostLikesModal({ postId, onClose }) {
                           backgroundColor: 'var(--bg-input)',
                         }}
                         onError={(e) => {
-                          e.currentTarget.src = '/images/default-avatar.jpg';
+                          e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                         }}
                       />
                       <div style={{ minWidth: 0, overflow: 'hidden' }}>
