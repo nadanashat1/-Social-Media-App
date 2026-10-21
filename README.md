@@ -15,7 +15,7 @@ https://nadanashat1.github.io/-Social-Media-App/
 - Sign in with either email or username
 - "Remember me" sessions (localStorage) or session-only login (sessionStorage)
 - Change password - the API issues a new token, which the app stores so you stay signed in
-- Session restore on reload; the stored session is cleared when the API rejects the token (401)
+- Session restore on reload; when the API rejects the token (401), the session is fully ended (storage and in-app state cleared) and you are routed back to sign in
 - Protected routes and public-only routes: signed-out users can't reach the app, signed-in users can't bounce back to the auth pages
 
 ### Feed and posts
