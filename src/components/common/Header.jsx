@@ -120,6 +120,7 @@ export default function Header({ onOpenCreatePost, onOpenUploadPhoto }) {
           <button
             type="button"
             className="btn-create-post"
+            aria-label="Create Post"
             onClick={onOpenCreatePost || (() => navigate('/'))}
           >
             <Plus size={16} strokeWidth={2.5} />
