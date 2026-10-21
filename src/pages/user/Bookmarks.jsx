@@ -144,10 +144,10 @@ export default function Bookmarks() {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
                   <img
-                    src={post.user?.photo || '/images/default-avatar.jpg'}
+                    src={post.user?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                     alt={post.user?.name || 'Author'}
                     style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
-                    onError={(e) => { e.currentTarget.src = '/images/default-avatar.jpg'; }}
+                    onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
                   />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 700, fontSize: '0.94rem' }}>
