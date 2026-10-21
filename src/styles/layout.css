@@ -957,3 +957,7 @@
   .site-footer { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.25rem 1rem; }
   .footer-links { flex-wrap: wrap; gap: 0.5rem 1.25rem; }
 }
+
+@media (max-width: 600px) {
+  .auth-card div, .auth-card a { min-width: 0; overflow-wrap: anywhere; }
+}
