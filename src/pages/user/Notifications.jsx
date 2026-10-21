@@ -285,7 +285,7 @@ export default function Notifications() {
             const senderName =
               notif.sender?.name || notif.actor?.name || 'Someone';
             const senderPhoto =
-              notif.sender?.photo || notif.actor?.photo || '/images/default-avatar.jpg';
+              notif.sender?.photo || notif.actor?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg';
             const senderId =
               notif.sender?._id || notif.sender?.id ||
               notif.actor?._id || notif.actor?.id ||
@@ -317,7 +317,7 @@ export default function Notifications() {
                         objectFit: 'cover',
                       }}
                       onError={(e) => {
-                        e.currentTarget.src = '/images/default-avatar.jpg';
+                        e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                       }}
                     />
                   </Link>
@@ -333,7 +333,7 @@ export default function Notifications() {
                       flexShrink: 0,
                     }}
                     onError={(e) => {
-                      e.currentTarget.src = '/images/default-avatar.jpg';
+                      e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
                     }}
                   />
                 )}
