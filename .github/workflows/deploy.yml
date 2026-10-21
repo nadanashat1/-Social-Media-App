@@ -24,6 +24,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run lint
+      - run: npm test
       - run: npm run build
       # SPA fallback: serve the app shell for client-side routes on reload
       - run: cp dist/index.html dist/404.html
