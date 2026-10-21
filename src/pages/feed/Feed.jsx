@@ -393,10 +393,10 @@ export default function Feed({ feedRefreshKey }) {
             <div className="auth-card" style={{ maxWidth: '100%', padding: '1.5rem', marginBottom: '1.75rem' }}>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
                 <img
-                  src={user?.photo || '/images/default-avatar.jpg'}
+                  src={user?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                   alt={user?.name || 'User'}
                   style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover' }}
-                  onError={(e) => { e.currentTarget.src = '/images/default-avatar.jpg'; }}
+                  onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
                 />
                 <form onSubmit={handleCreatePost} style={{ flex: 1 }}>
                   <textarea
@@ -568,10 +568,10 @@ export default function Feed({ feedRefreshKey }) {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                           <Link to={authorId ? `/profile/${authorId}` : '#'}>
                             <img
-                              src={author.photo || '/images/default-avatar.jpg'}
+                              src={author.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                               alt={author.name || 'Author'}
                               style={{ width: 42, height: 42, borderRadius: '50%', objectFit: 'cover' }}
-                              onError={(e) => { e.currentTarget.src = '/images/default-avatar.jpg'; }}
+                              onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
                             />
                           </Link>
                           <div>
@@ -613,10 +613,10 @@ export default function Feed({ feedRefreshKey }) {
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.75rem' }}>
                             <Link to={origAuthorId ? `/profile/${origAuthorId}` : '#'}>
                               <img
-                                src={origAuthor.photo || '/images/default-avatar.jpg'}
+                                src={origAuthor.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                                 alt={origAuthor.name || 'Original author'}
                                 style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'cover' }}
-                                onError={(e) => { e.currentTarget.src = '/images/default-avatar.jpg'; }}
+                                onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
                               />
                             </Link>
                             <div>
@@ -808,10 +808,10 @@ export default function Feed({ feedRefreshKey }) {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', overflow: 'hidden' }}>
                         <Link to={`/profile/${sugId}`}>
                           <img
-                            src={sug.photo || '/images/default-avatar.jpg'}
+                            src={sug.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
                             alt={sug.name}
                             style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }}
-                            onError={(e) => { e.currentTarget.src = '/images/default-avatar.jpg'; }}
+                            onError={(e) => { e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg'; }}
                           />
                         </Link>
                         <div style={{ overflow: 'hidden' }}>
