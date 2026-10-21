@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useCallback, Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Header from './components/common/Header';
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -9,13 +9,31 @@ import CreatePostModal from './components/common/CreatePostModal';
 
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
-import Profile from './pages/user/Profile';
-import ChangePassword from './pages/user/ChangePassword';
-import FollowSuggestions from './pages/user/FollowSuggestions';
-import Bookmarks from './pages/user/Bookmarks';
-import Notifications from './pages/user/Notifications';
 import Feed from './pages/feed/Feed';
 import UploadPhotoModal from './pages/user/UploadPhotoModal';
+
+// Secondary routes are code-split so first load ships less JavaScript.
+const Profile = lazy(() => import('./pages/user/Profile'));
+const ChangePassword = lazy(() => import('./pages/user/ChangePassword'));
+const FollowSuggestions = lazy(() => import('./pages/user/FollowSuggestions'));
+const Bookmarks = lazy(() => import('./pages/user/Bookmarks'));
+const Notifications = lazy(() => import('./pages/user/Notifications'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+function RouteFallback() {
+  return (
+    <div
+      style={{
+        minHeight: '60vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div className="spinner dark" style={{ width: 28, height: 28, borderWidth: 3 }} />
+    </div>
+  );
+}
 
 import './styles/theme.css';
 import './styles/layout.css';
@@ -40,6 +58,7 @@ export default function App() {
           />
 
           <main style={{ flex: 1 }}>
+            <Suspense fallback={<RouteFallback />}>
             <Routes>
               {/* Public Authentication Routes */}
               <Route
@@ -136,9 +155,10 @@ export default function App() {
                 }
               />
 
-              {/* Fallback route */}
-              <Route path="*" element={<Navigate to="/" replace />} />
+              {/* Unknown routes show a 404 instead of silently redirecting */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
+            </Suspense>
           </main>
 
           <UploadPhotoModal
