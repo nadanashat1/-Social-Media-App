@@ -9,6 +9,7 @@ import {
   getActiveUser,
   setAuthStorage,
   clearAuthStorage,
+  setUnauthorizedHandler,
 } from '../api/client';
 
 const AuthContext = createContext(null);
@@ -83,6 +84,13 @@ export function AuthProvider({ children }) {
     setToken(null);
     setUser(null);
   }, []);
+
+  // When the API rejects the token (401), the client clears storage and notifies
+  // us here so React state is dropped too; protected routes then redirect to sign in.
+  useEffect(() => {
+    setUnauthorizedHandler(logout);
+    return () => setUnauthorizedHandler(null);
+  }, [logout]);
 
   
   const refreshProfile = useCallback(async () => {
