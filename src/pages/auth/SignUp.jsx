@@ -12,8 +12,8 @@ export default function SignUp() {
     username: '',
     name: '',
     email: '',
-    dateOfBirth: '2000-01-01',
-    gender: 'female',
+    dateOfBirth: '',
+    gender: '',
     password: '',
     rePassword: '',
   });
@@ -296,7 +296,7 @@ export default function SignUp() {
                   id="signup-password"
                   type={showPassword ? 'text' : 'password'}
                   className="form-input"
-                  placeholder="Min. 8 characters"
+                  placeholder="Min. 6 characters"
                   value={formData.password}
                   onChange={(e) => handleChange('password', e.target.value)}
                   autoComplete="new-password"
@@ -347,7 +347,7 @@ export default function SignUp() {
           {/* Manifesto Note */}
           <p className="editorial-note">
             By creating a folio profile on Route, you endorse our open-format{' '}
-            <a href="#manifesto">Editorial Manifesto</a> and standard data protocol.
+            <span>Editorial Manifesto</span> and standard data protocol.
           </p>
 
           {/* Submit Button */}
