@@ -167,11 +167,11 @@ export default function UploadPhotoModal({ isOpen, onClose }) {
             }}
           >
             <img
-              src={previewUrl || user?.photo || '/images/default-avatar.jpg'}
+              src={previewUrl || user?.photo || import.meta.env.BASE_URL + 'images/default-avatar.jpg'}
               alt="Avatar preview"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               onError={(e) => {
-                e.currentTarget.src = '/images/default-avatar.jpg';
+                e.currentTarget.src = import.meta.env.BASE_URL + 'images/default-avatar.jpg';
               }}
             />
           </div>
